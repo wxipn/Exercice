@@ -1,0 +1,4 @@
+services:
+#    seb_parser.example:
+#        class: SEB\ParserBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]
