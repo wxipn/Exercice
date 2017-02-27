@@ -20,6 +20,7 @@ class DefaultController extends Controller
 		// On récupère le noeud et on modifie sa valeur
 		$trad = $dom->getElementsByTagName('trad');
 		
+		// Si on renvoi un post
 		if ($request->isMethod('POST')){
 			foreach ($trad as $value){
 				
@@ -36,7 +37,7 @@ class DefaultController extends Controller
 		}
 		
 		$tabId = array();
-		// On extrait de l'objet $EnableAccount la variable $c
+		// On extrait de l'objet $trad on transmet à la variable $c
 		foreach ($trad as $c){
 				 $trad_id = $c->getAttribute('id');
 				 $phrase = $c->firstChild->nodeValue;
