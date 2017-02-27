@@ -4,14 +4,13 @@ namespace SEB\ParserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\File;
 
 class DefaultController extends Controller
 {
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-		
-		// Initialisation XML
 		$dom = new \DomDocument();
 		 
 		// On charge le fichier XML correspondant au client
@@ -19,19 +18,32 @@ class DefaultController extends Controller
 		$dom->load(utf8_decode($fichier), LIBXML_NOWARNING);
 		 
 		// On récupère le noeud et on modifie sa valeur
-		$trad = $dom->getElementsByTagName("trad");
+		$trad = $dom->getElementsByTagName('trad');
 		
+		if ($request->isMethod('POST')){
+			foreach ($trad as $value){
+				
+				$postDataId = $value->getAttribute('id');
+				$postDataTraduction = $request->get('traduction'.$postDataId);
+
+				if($value->getAttribute('id') == $postDataId){
+					$value->firstChild->nodeValue = $postDataTraduction;
+
+					$dom->save($fichier);
+				}
+			}
+			$dom->load(utf8_decode($fichier), LIBXML_NOWARNING);
+		}
+		
+		$tabId = array();
 		// On extrait de l'objet $EnableAccount la variable $c
 		foreach ($trad as $c){
-			 echo $c->getAttribute("id").'-'.$c->firstChild->nodeValue . "<br />";
-			 if($c->getAttribute("id") == 'phrase2'){
-				$c->firstChild->nodeValue = "Exemple de nouvelle phrase en français (5)";
-			 }
-		}
+				 $trad_id = $c->getAttribute('id');
+				 $phrase = $c->firstChild->nodeValue;
+				 $tab = array('id'=> $trad_id, 'phrase' => $phrase);
 
-		// Enregistrement du fichier XML
-		$dom->save($fichier);
-
-		return new Response('');
+				 array_push($tabId, $tab);
 		}
+		return $this->render('SEBParserBundle:Default:index.html.twig', array('list_id' => $tabId));
+	}
 }

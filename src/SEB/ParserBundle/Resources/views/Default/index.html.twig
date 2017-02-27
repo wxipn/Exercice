@@ -1,5 +1,58 @@
-<body>
+<!DOCTYPE html>
 <html>
-Hello World!
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>{% block title %}SEB Plateforme{% endblock %}</title>
+
+  {% block stylesheets %}
+    {# On charge le CSS de bootstrap depuis le site directement #}
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  {% endblock %}
+</head>
+
+<body>
+  <div class="container">
+    <div id="header" class="jumbotron">
+      <h1>Modification de fichier XML</h1>
+    </div>
+		<h2>Gestion des traductions</h2>
+	<form method="post" id="bouton">
+	<div class="row">
+	{% for tableau in list_id %}
+		<div class="">
+			<div class="form-group">
+				<div class="col-lg-1">
+					<label title="Id phrasse">ID:</label>
+				</div>
+				<div class="col-lg-5">
+					<input id="tabId" name="{{tableau.id}}" class="form-control" value="{{tableau.id}}" type="text">
+				</div>
+			</div>
+				<div class="form-group">
+				<div class="col-lg-1">
+					<label title="Traduction phrase">Traduction:</label>
+				</div>
+				<div class="col-lg-5">
+					<input name="traduction{{tableau.id}}" class="form-control" value="{{tableau.phrase}}">
+				</div>
+			</div>
+		</div><br>
+		{% endfor %}
+	</div><br>
+	<button type="submit" id="test" class="btn btn-default pull-right" name="edition">Enregistrer</button>
+	</form>
+	
+    <footer>
+    </footer>
+</div>
+
+  {% block javascripts %}
+    {# Ajoutez ces lignes JavaScript si vous comptez vous servir des fonctionnalités du bootstrap Twitter #}
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  {% endblock %}
+
 </body>
 </html>
