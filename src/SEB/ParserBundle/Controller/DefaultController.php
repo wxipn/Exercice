@@ -28,8 +28,13 @@ class DefaultController extends Controller
 				$postDataTraduction = $request->get('traduction'.$postDataId);
 
 				if($value->getAttribute('id') == $postDataId){
+					//Si il n'y a aucune entrée dans le document
+					if($value->firstChild == null){
+						$default = $dom->createTextNode($postDataTraduction);
+					  $value->appendChild($default);
+				  } else {
 					$value->firstChild->nodeValue = $postDataTraduction;
-
+				  }
 					$dom->save($fichier);
 				}
 			}
@@ -40,7 +45,12 @@ class DefaultController extends Controller
 		// On extrait de l'objet $trad on transmet à la variable $c
 		foreach ($trad as $c){
 				 $trad_id = $c->getAttribute('id');
-				 $phrase = $c->firstChild->nodeValue;
+				 //Si il n'y a aucune entrée dans le document
+				  if($c->firstChild == null){
+					  $phrase = '';
+				  } else {
+					  $phrase = $c->firstChild->nodeValue;
+				  }
 				 $tab = array('id'=> $trad_id, 'phrase' => $phrase);
 
 				 array_push($tabId, $tab);
